@@ -31,6 +31,7 @@ export default class App extends React.Component {
     startGame() {
         if (this.intervalId) {
             clearInterval(this.intervalId);
+            this.setState({time: 0});
         }
         this.setState({gameIsLoading: true});
         fetch("/api/game/start")
@@ -42,7 +43,7 @@ export default class App extends React.Component {
                             cardState: j,
                             time: 0
                         }));
-
+                    this.cardsToFlip = 2;
                     this.intervalId = setInterval(() => this.setState({time: this.state.time + 1}), 1000);
                     this.updateScore();
                 } else {
