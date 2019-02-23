@@ -22,13 +22,13 @@ namespace thegame.Controllers
         [HttpGet("score")]
         public IActionResult Score()
         {
-            return Ok(50);
+            return Ok(GameState.Score);
         }
 
         [HttpGet("start")]
         public IActionResult Start()
         {
-            GameState.GenerateMap();
+            GameState.RegenerateMap();
             return Ok(GameState.Map);
         }
 

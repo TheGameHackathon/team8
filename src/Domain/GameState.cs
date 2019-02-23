@@ -10,10 +10,12 @@ namespace thegame.Domain
         public List<CardEntity> Map { get; set; } = new List<CardEntity>();
         public int PreviousPosition { get; set; } = -1;
         public int TurnCount { get; set; }
+        public int Score { get; set; }
+        public int Combo { get; set; }
 
         public bool IsFinished => foundedPairsCount == 16;
 
-        public void GenerateMap()
+        public void RegenerateMap()
         {
             var random = new Random();
             var elements = new List<CardEntity>();
@@ -27,6 +29,8 @@ namespace thegame.Domain
             PreviousPosition = -1;
             foundedPairsCount = 0;
             TurnCount = 0;
+            Score = 0;
+            Combo = 1;
         }
 
         public void MakeTurn(int position)
@@ -39,12 +43,17 @@ namespace thegame.Domain
                 if (Map[PreviousPosition].Type == Map[position].Type)
                 {
                     foundedPairsCount++;
+                    Score += 10 * Combo;
+                    Combo++;
+
                 }
 
                 else
                 {
                     Map[PreviousPosition].IsFlipped = false;
                     Map[position].IsFlipped = false;
+                    Combo = 1;
+                    Score -= 2;
                 }
 
                 PreviousPosition = -1;
