@@ -9,8 +9,13 @@ namespace thegame.Controllers
     [Route("api/game")]
     public class GameController : Controller
     {
+        private readonly GameState GameState;
+        
 
-        public List<CardEntity> Map {get; set;}
+        public GameController(GameState gameState)
+        {
+            GameState = gameState;
+        }
 
         [HttpGet("score")]
         public IActionResult Score()
@@ -21,25 +26,44 @@ namespace thegame.Controllers
         [HttpGet("start")]
         public IActionResult Start()
         {
-            Map = new List<CardEntity>();
 
             for (var i = 0; i < 32; i++)
             {
-                Map.Add(new CardEntity());
+                GameState.Map.Add(new CardEntity());
             }
 
-            return Ok(Map);
+            GameState.PreviousPosition = -1;
+
+            return Ok(GameState.Map);
         }
 
         [HttpPost("turn")]
         public IActionResult Turn([FromBody] TurnDTO turn)
         {
-            Map[turn.Position].IsFlipped = true;
+            GameState.Map[turn.Position].IsFlipped = true;
             var result = new TurnResultDTO
             {
-                Position =  turn.Position,
-                IsFlipped = true
+                Position = turn.Position,
+                IsFlipped = true,
+                Type = GameState.Map[turn.Position].Type,
             };
+
+            
+
+            if (GameState.TurnCount % 2 != 0)
+            {
+                result.PreviousPosition = GameState.PreviousPosition;
+                result.IsMatch = GameState.Map[GameState.PreviousPosition].Type == GameState.Map[turn.Position].Type;
+                GameState.PreviousPosition = -1;
+            }
+            else
+            {
+                result.PreviousPosition = GameState.PreviousPosition;
+                GameState.PreviousPosition = turn.Position;    
+                result.IsMatch = false;
+            }
+            GameState.TurnCount++;
+
             return Ok(result);
         }
 
