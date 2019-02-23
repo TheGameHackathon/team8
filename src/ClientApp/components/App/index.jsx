@@ -7,6 +7,7 @@ export default class App extends React.Component {
         super();
         this.state = {
             score: 0,
+            cardState: [-1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1]
         };
     }
 
@@ -16,7 +17,7 @@ export default class App extends React.Component {
                 <span className={styles.score}>
                     Ваш счет: {this.state.score}
                 </span>
-                <Field/>
+                <Field cardState={this.state.cardState} rows={4} cardsInRow={8}/>
             </div>
         );
     }
