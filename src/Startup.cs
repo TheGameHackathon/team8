@@ -7,6 +7,7 @@ using Microsoft.Extensions.DependencyInjection;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Serialization;
 using Swashbuckle.AspNetCore.Swagger;
+using thegame.Domain;
 
 namespace thegame
 {
@@ -37,7 +38,9 @@ namespace thegame
                     Version = "v1",  
                     Title = "The Game API"  
                 });  
-            });  
+            });
+
+            services.AddSingleton(z => new GameState());
 
         }
 
