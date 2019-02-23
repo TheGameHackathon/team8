@@ -44,11 +44,11 @@ export default class Field extends React.Component {
 
     renderCard(cardId) {
         const typeId = this.props.cardState[cardId].type;
-        const isFlipped = this.props.cardState[cardId].isFlipped;
+        const isFlipped = this.props.cardState[cardId].isFlipped && !this.props.gameIsLoading;
         let cardDivId = "card_" + cardId;
         return (
             <td className={styles.cell} key={cardDivId}>
-                <div onClick={!isFlipped && (() => this.switchCard(cardId))}
+                <div onClick={!isFlipped && !this.props.gameIsLoading && (() => this.switchCard(cardId))}
                      className={isFlipped ? classNames(styles.card, styles.cardFlipped) : styles.card}
                      id={cardDivId}>
                     <div className={classNames(styles.cardSide, styles.cardBack)}/>
