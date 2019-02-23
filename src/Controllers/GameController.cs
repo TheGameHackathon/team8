@@ -1,4 +1,8 @@
+using System;
+using System.Collections.Generic;
+using System.Runtime.InteropServices.ComTypes;
 using Microsoft.AspNetCore.Mvc;
+using thegame.Domain;
 
 namespace thegame.Controllers
 {
@@ -6,7 +10,7 @@ namespace thegame.Controllers
     public class GameController : Controller
     {
 
-        public int[,] Map {get; set;} = new int[4,8];
+        public List<CardEntity> Map {get; set;}
 
         [HttpGet("score")]
         public IActionResult Score()
@@ -17,12 +21,13 @@ namespace thegame.Controllers
         [HttpGet("start")]
         public IActionResult Start()
         {
-            Map = new int[,] {
-                {1, 2, 3, 4, 1, 2, 3, 4},
-                {5, 6, 7, 8, 5, 6, 7, 8},
-                {9, 10, 11, 12, 9, 10, 11, 12},
-                {13, 14, 15, 0, 13, 14, 15, 0},      
-            };
+            Map = new List<CardEntity>();
+
+            for (var i = 0; i < 32; i++)
+            {
+                Map.Add(new CardEntity());
+            }
+
             return Ok(Map);
         }
 
@@ -31,6 +36,28 @@ namespace thegame.Controllers
         {
             return Ok();
         }
+
+        //private CardEntity[,] RandomMap()
+        //{
+        //    var random = new Random();
+        //    var elements = new List<CardEntity>();
+        //    for (int i = 0;  i < 16;  i++)
+        //    {
+        //        elements.Add(new CardEntity{IsFlipped = false, Type = i});
+        //        elements.Add(new CardEntity { IsFlipped = false, Type = i });
+        //    }
+
+        //    elements.Sort((x, y) => random.Next(-1, 1));
+        //    var result = new CardEntity[4, 8];
+        //    for (var i = 0; i < 8; i++)
+        //    {
+        //        for (var j = 0; j < 4; j++)
+        //        {
+                    
+        //        }
+        //    }
+        //}
+    
     }
 
     
