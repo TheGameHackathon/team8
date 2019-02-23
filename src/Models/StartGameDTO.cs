@@ -1,12 +1,12 @@
+﻿using System;
 using System.Collections.Generic;
 using thegame.Domain;
 
 namespace thegame
 {
-    public class TurnResultDTO
+    public class StartGameDTO
     {
+        public Guid Id { get; set; }
         public List<CardEntity> Map { get; set; }
-        public List<int> ShuffledCards { get; set; }
-        public bool IsFinished { get; set; }
     }
 }

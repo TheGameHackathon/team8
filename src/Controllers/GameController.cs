@@ -11,31 +11,40 @@ namespace thegame.Controllers
     [Route("api/game")]
     public class GameController : Controller
     {
-        private readonly GameState GameState;
-        
+        private readonly IGameStateRepository gameStateRepository;
 
-        public GameController(GameState gameState)
+
+        public GameController(IGameStateRepository gameStateRepository)
         {
-            GameState = gameState;
+            this.gameStateRepository = gameStateRepository;
         }
 
         [HttpGet("score")]
-        public IActionResult Score()
+        public IActionResult Score([FromQuery]Guid id)
         {
-            return Ok(GameState.Score);
+            var gameState = gameStateRepository.FindById(id);
+            if (gameState == null)
+            {
+                ModelState.AddModelError("id", "bad id");
+                return new UnprocessableEntityObjectResult(ModelState);
+            }
+            return Ok(gameState.Score);
         }
 
         [HttpGet("start")]
         public IActionResult Start()
         {
-            GameState.RegenerateMap();
-            return Ok(GameState.Map);
+            var id = Guid.NewGuid();
+            var gameState = GameState.GenerateNewMap(id);
+            gameStateRepository.Insert(gameState);
+            return Ok(new StartGameDTO {Id = id, Map = gameState.Map});
         }
 
         [HttpPost("turn")]
-        public IActionResult Turn([FromBody] TurnDTO turn)
+        public IActionResult Turn([FromQuery]Guid id, [FromBody] TurnDTO turn)
         {
             #region legacy
+
             //GameState.Map[turn.Position].IsFlipped = true;
             //var result = new TurnResultDTO
             //{
@@ -43,7 +52,6 @@ namespace thegame.Controllers
             //    IsFlipped = true,
             //    Type = GameState.Map[turn.Position].Type,
             //};
-
 
 
             //if (GameState.TurnCount % 2 != 0)
@@ -69,40 +77,44 @@ namespace thegame.Controllers
             //    result.IsMatch = false;
             //}
             //GameState.TurnCount++;
-#endregion
-            GameState.MakeTurn(turn.Position);
+
+            #endregion
+
+            var gameState = gameStateRepository.FindById(id);
+            if (gameState == null)
+            {
+                ModelState.AddModelError("id", "bad id");
+                return new UnprocessableEntityObjectResult(ModelState);
+            }
+            gameState.MakeTurn(turn.Position);
 
             var result = new TurnResultDTO();
 
-            if (GameState.TurnCount % 3 == 0 && GameState.TurnCount != 0)
+            if (gameState.TurnCount % 3 == 0 && gameState.TurnCount != 0)
             {
-                var unflippedCards = GameState.Map.Select((c, i) => (c, i)).Where(c => !c.Item1.IsFlipped).ToList();
+                var unflippedCards = gameState.Map.Select((c, i) => (c, i)).Where(c => !c.Item1.IsFlipped).ToList();
                 if (unflippedCards.Count >= 2)
                 {
                     var rnd = new Random();
                     var first = unflippedCards[rnd.Next(0, unflippedCards.Count)];
                     unflippedCards.Remove(first);
                     var second = unflippedCards[rnd.Next(0, unflippedCards.Count)];
-                    result.ShuffledCards = new List<CardEntity>()
+                    result.ShuffledCards = new List<int>()
                     {
-                        first.Item1,
-                        second.Item1
+                        first.Item2,
+                        second.Item2
                     };
 
-                    GameState.Map[first.Item2] = second.Item1;
-                    GameState.Map[second.Item2] = first.Item1;
+                    gameState.Map[first.Item2] = second.Item1;
+                    gameState.Map[second.Item2] = first.Item1;
                 }
-
             }
-            result.Map = GameState.Map;
-            result.IsFinished = GameState.IsFinished;
+
+            result.Map = gameState.Map;
+            result.IsFinished = gameState.IsFinished;
 
 
             return Ok(result);
         }
-        
-    
     }
-
-    
 }
