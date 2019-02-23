@@ -34,7 +34,13 @@ namespace thegame.Controllers
         [HttpPost("turn")]
         public IActionResult Turn([FromBody] TurnDTO turn)
         {
-            return Ok();
+            Map[turn.Position].IsFlipped = true;
+            var result = new TurnResultDTO
+            {
+                Position =  turn.Position,
+                IsFlipped = true
+            };
+            return Ok(result);
         }
 
         //private CardEntity[,] RandomMap()

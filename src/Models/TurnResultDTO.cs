@@ -1,7 +1,9 @@
-namespace thegame {
-    public class TurnResultDTO{
-        public int X {get; set;}
-        public int Y {get; set;}
-        public int Value {get; set;}
+namespace thegame
+{
+    public class TurnResultDTO
+    {
+        public int Position {get; set;}
+        public int Type {get; set;}
+        public bool IsFlipped { get; set; }
     }
 }
