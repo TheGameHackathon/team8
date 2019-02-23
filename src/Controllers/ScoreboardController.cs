@@ -20,7 +20,7 @@ namespace thegame.Controllers
             this.gameStateRepository = gameStateRepository;
         }
 
-        [HttpGet("/")]
+        [HttpGet]
         public IActionResult Scoreboard([FromQuery] int pageNumber = 0, [FromQuery] int pageSize = 5)
         {
             return Ok(gameStateRepository.GetAllGameStates()
