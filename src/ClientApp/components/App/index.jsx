@@ -10,10 +10,13 @@ export default class App extends React.Component {
         this.cardsToFlip = 2;
         this.state = {
             score: 0,
+            time: 0,
             gameIsLoading: false
         };
+        this.intervalId = null;
     }
 
+    // noinspection JSMethodCanBeStatic
     updateScore() {
         fetch("/api/game/score")
             .then(r => {
@@ -26,6 +29,9 @@ export default class App extends React.Component {
     }
 
     startGame() {
+        if (this.intervalId) {
+            clearInterval(this.intervalId);
+        }
         this.setState({gameIsLoading: true});
         fetch("/api/game/start")
             .then(r => {
@@ -33,8 +39,11 @@ export default class App extends React.Component {
                     Promise.all([this.delay(this.state.cardState ? 500 : 0), r.json()])
                         .then(([_, j]) => this.setState({
                             gameIsLoading: false,
-                            cardState: j
+                            cardState: j,
+                            time: 0
                         }));
+
+                    this.intervalId = setInterval(() => this.setState({time: this.state.time + 1}), 1000);
                     this.updateScore();
                 } else {
                     this.setState({gameIsLoading: false});
@@ -47,12 +56,12 @@ export default class App extends React.Component {
             <div className={styles.root}>
                 <div className={styles.panel}>
                     <Button use="pay" size="medium"
-                        className={styles.startButton}
-                        disabled={this.state.startingGame}
-                        onClick={() => this.startGame()}>
+                            className={styles.startButton}
+                            disabled={this.state.startingGame}
+                            onClick={() => this.startGame()}>
                         {this.state.startingGame ? "Загрузка..." : "Начать игру"}
                     </Button>
-                    <StatusPanel score={this.state.score}/>
+                    <StatusPanel score={this.state.score} time={this.state.time}/>
                 </div>
                 {this.renderField()}
             </div>
