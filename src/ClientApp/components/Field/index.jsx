@@ -37,25 +37,14 @@ const cards = [cardBack0,
     cardBack15];
 
 export default class Field extends React.Component {
-    constructor({cardState, rows, cardsInRow}) {
-        super();
-        this.state = {
-            cardState: cardState,
-            rowsCount: rows,
-            cardsInRow: cardsInRow
-        };
-    }
-
-    switchCard(cardId) {
-        console.log(cardId);
-        const state = this.state.cardState;
-        state[cardId].isFlipped = true;
-        this.setState({cardState: state})
+    constructor(props) {
+        super(props);
+        this.switchCard = props.switchCard
     }
 
     renderCard(cardId) {
-        const typeId = this.state.cardState[cardId].type;
-        const isFlipped = this.state.cardState[cardId].isFlipped;
+        const typeId = this.props.cardState[cardId].type;
+        const isFlipped = this.props.cardState[cardId].isFlipped;
         let cardDivId = "card_" + cardId;
         return (
             <td className={styles.cell} key={cardDivId}>
@@ -72,8 +61,8 @@ export default class Field extends React.Component {
 
     renderRow(rowId) {
         const cards = [];
-        for (let i = 0; i < this.state.cardsInRow; i++) {
-            cards.push(this.renderCard(rowId * this.state.cardsInRow + i));
+        for (let i = 0; i < this.props.cardsInRow; i++) {
+            cards.push(this.renderCard(rowId * this.props.cardsInRow + i));
         }
         return (
             <tr className={styles.row} key={rowId}>
@@ -84,7 +73,7 @@ export default class Field extends React.Component {
 
     render() {
         const rows = [];
-        for (let i = 0; i < this.state.rowsCount; i++) {
+        for (let i = 0; i < this.props.rowsCount; i++) {
             rows.push(this.renderRow(i));
         }
         return (
