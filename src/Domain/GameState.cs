@@ -25,6 +25,8 @@ namespace thegame.Domain
 
             Map = elements.OrderBy(x => random.Next()).ToList();
             PreviousPosition = -1;
+            foundedPairsCount = 0;
+            TurnCount = 0;
         }
 
         public void MakeTurn(int position)
