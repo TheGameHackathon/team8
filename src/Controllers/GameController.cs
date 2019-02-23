@@ -43,49 +43,19 @@ namespace thegame.Controllers
         [HttpPost("turn")]
         public IActionResult Turn([FromQuery]Guid id, [FromBody] TurnDTO turn)
         {
-            #region legacy
-
-            //GameState.Map[turn.Position].IsFlipped = true;
-            //var result = new TurnResultDTO
-            //{
-            //    Position = turn.Position,
-            //    IsFlipped = true,
-            //    Type = GameState.Map[turn.Position].Type,
-            //};
-
-
-            //if (GameState.TurnCount % 2 != 0)
-            //{
-            //    result.PreviousPosition = GameState.PreviousPosition;
-            //    if (GameState.Map[GameState.PreviousPosition].Type == GameState.Map[turn.Position].Type)
-            //    {
-            //        result.IsMatch = true;
-            //    }
-
-            //    else
-            //    {
-            //        GameState.Map[GameState.PreviousPosition].IsFlipped = false;
-            //        GameState.Map[turn.Position].IsFlipped = false;
-            //    }
-
-            //    GameState.PreviousPosition = -1;
-            //}
-            //else
-            //{
-            //    result.PreviousPosition = GameState.PreviousPosition;
-            //    GameState.PreviousPosition = turn.Position;    
-            //    result.IsMatch = false;
-            //}
-            //GameState.TurnCount++;
-
-            #endregion
-
             var gameState = gameStateRepository.FindById(id);
             if (gameState == null)
             {
                 ModelState.AddModelError("id", "bad id");
                 return new UnprocessableEntityObjectResult(ModelState);
             }
+
+            if (turn.Position < 0 || turn.Position >= 32)
+            {
+                return BadRequest();
+
+            }
+
             gameState.MakeTurn(turn.Position);
 
             var result = new TurnResultDTO();

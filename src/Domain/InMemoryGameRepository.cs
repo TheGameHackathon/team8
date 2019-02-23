@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 
 namespace thegame.Domain
 {
@@ -35,6 +36,11 @@ namespace thegame.Domain
             }
 
             return null;
+        }
+
+        public IEnumerable<GameState> GetAllGameStates()
+        {
+            return gameStates.Values.ToList();
         }
     }
 }
