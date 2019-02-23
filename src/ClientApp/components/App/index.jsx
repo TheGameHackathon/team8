@@ -1,4 +1,5 @@
 import React from 'react';
+import StatusPanel from './StatusPanel';
 import styles from './styles.css';
 import Field from '../Field';
 
@@ -143,9 +144,7 @@ export default class App extends React.Component {
     render() {
         return (
             <div className={styles.root}>
-                <span className={styles.score}>
-                    Ваш счет: {this.state.score}
-                </span>
+                <StatusPanel score={this.state.score}></StatusPanel>
                 <Field cardState={this.state.cardState} rows={4} cardsInRow={8}/>
             </div>
         );
