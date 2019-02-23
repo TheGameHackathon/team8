@@ -3,20 +3,20 @@ import styles from './styles.css';
 import Field from '../Field';
 
 export default class App extends React.Component {
-    constructor () {
+    constructor() {
         super();
         this.state = {
-            score: 50,
+            score: 0,
         };
     }
 
-    render () {
+    render() {
         return (
-            <div className={ styles.root }>
-                <div className={ styles.score }>
-                    Ваш счет: { this.state.score }
-                </div>
-                <Field />
+            <div className={styles.root}>
+                <span className={styles.score}>
+                    Ваш счет: {this.state.score}
+                </span>
+                <Field/>
             </div>
         );
     }
