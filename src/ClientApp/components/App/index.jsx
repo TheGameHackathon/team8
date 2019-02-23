@@ -6,6 +6,7 @@ import StatusPanel from "./StatusPanel";
 export default class App extends React.Component {
     constructor() {
         super();
+        this.cardsToFlip = 2;
         this.state = {
             score: 0,
             gameIsLoading: false
@@ -28,11 +29,11 @@ export default class App extends React.Component {
         fetch("/api/game/start")
             .then(r => {
                 if (r.status === 200) {
-                    r.json().then(j => {
-                        setTimeout(() => this.setState({gameIsLoading: false, cardState: j}),
-                            this.state.cardState ? 500 : 0
-                        );
-                    });
+                    Promise.all([this.delay(this.state.cardState ? 500 : 0), r.json()])
+                        .then(([_, j]) => this.setState({
+                            gameIsLoading: false,
+                            cardState: j
+                        }));
                 } else {
                     this.setState({gameIsLoading: false});
                 }
@@ -63,9 +64,43 @@ export default class App extends React.Component {
     }
 
     switchCard(cardId) {
+        if (this.cardsToFlip <= 0)
+            return;
+        this.cardsToFlip--;
         const state = this.state.cardState;
         state[cardId].isFlipped = true;
         this.setState({cardState: state});
-        this.updateScore();
+        this.delay(this.cardsToFlip === 0 ? 1000 : 0).then(() =>
+            this.makeTurn(cardId));
+    }
+
+    makeTurn(cardId) {
+        fetch('/api/game/turn',
+            {
+                method: 'POST',
+                headers: {
+                    'Accept': 'application/json',
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({position: cardId})
+            }
+        ).then(r => {
+                if (r.status === 200) {
+                    if (this.cardsToFlip <= 0) {
+                        this.cardsToFlip = 2;
+                    }
+                    r.json().then(j => {
+                        this.setState({cardState: j});
+                        this.updateScore();
+                    });
+                }
+            }
+        );
+    }
+
+    delay(amount) {
+        return new Promise(resolve => {
+            setTimeout(() => resolve(), amount);
+        });
     }
 }
