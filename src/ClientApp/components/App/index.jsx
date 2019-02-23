@@ -7,7 +7,136 @@ export default class App extends React.Component {
         super();
         this.state = {
             score: 0,
-            cardState: [-1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1]
+            cardState: [
+                {
+                    "type": 1,
+                    "isFlipped": false
+                },
+                {
+                    "type": 0,
+                    "isFlipped": false
+                },
+                {
+                    "type": 0,
+                    "isFlipped": false
+                },
+                {
+                    "type": 0,
+                    "isFlipped": false
+                },
+                {
+                    "type": 0,
+                    "isFlipped": false
+                },
+                {
+                    "type": 0,
+                    "isFlipped": false
+                },
+                {
+                    "type": 0,
+                    "isFlipped": false
+                },
+                {
+                    "type": 0,
+                    "isFlipped": false
+                },
+                {
+                    "type": 0,
+                    "isFlipped": false
+                },
+                {
+                    "type": 0,
+                    "isFlipped": false
+                },
+                {
+                    "type": 0,
+                    "isFlipped": false
+                },
+                {
+                    "type": 0,
+                    "isFlipped": false
+                },
+                {
+                    "type": 0,
+                    "isFlipped": false
+                },
+                {
+                    "type": 0,
+                    "isFlipped": false
+                },
+                {
+                    "type": 0,
+                    "isFlipped": false
+                },
+                {
+                    "type": 0,
+                    "isFlipped": false
+                },
+                {
+                    "type": 0,
+                    "isFlipped": false
+                },
+                {
+                    "type": 0,
+                    "isFlipped": false
+                },
+                {
+                    "type": 0,
+                    "isFlipped": false
+                },
+                {
+                    "type": 0,
+                    "isFlipped": false
+                },
+                {
+                    "type": 0,
+                    "isFlipped": false
+                },
+                {
+                    "type": 0,
+                    "isFlipped": false
+                },
+                {
+                    "type": 0,
+                    "isFlipped": false
+                },
+                {
+                    "type": 0,
+                    "isFlipped": false
+                },
+                {
+                    "type": 0,
+                    "isFlipped": false
+                },
+                {
+                    "type": 0,
+                    "isFlipped": false
+                },
+                {
+                    "type": 0,
+                    "isFlipped": false
+                },
+                {
+                    "type": 0,
+                    "isFlipped": false
+                },
+                {
+                    "type": 0,
+                    "isFlipped": false
+                },
+                {
+                    "type": 0,
+                    "isFlipped": false
+                },
+                {
+                    "type": 0,
+                    "isFlipped": false
+                },
+                {
+                    "type": 0,
+                    "isFlipped": false
+                }
+            ]
         };
     }
 
