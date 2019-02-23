@@ -1,12 +1,12 @@
+using System.Collections.Generic;
+using thegame.Domain;
+
 namespace thegame
 {
     public class TurnResultDTO
     {
-        public int Position {get; set;}
-        public int Type {get; set;}
-        public bool IsFlipped { get; set; }
-        public int PreviousPosition { get; set; }
-        public bool IsMatch { get; set; }
-        public bool IsGameFinished { get; set; }
+        public List<CardEntity> Map { get; set; }
+        public List<CardEntity> ShuffledCards { get; set; }
+        public bool IsFinished { get; set; }
     }
 }
