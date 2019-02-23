@@ -14,11 +14,12 @@ export default class App extends React.Component {
             gameIsLoading: false
         };
         this.intervalId = null;
+        this.gameId = "";
     }
 
     // noinspection JSMethodCanBeStatic
     updateScore() {
-        fetch("/api/game/score")
+        fetch("/api/game/score?id=" + this.gameId)
             .then(r => {
                 if (r.status === 200) {
                     r.json().then(j => {
@@ -38,11 +39,14 @@ export default class App extends React.Component {
             .then(r => {
                 if (r.status === 200) {
                     Promise.all([this.delay(this.state.cardState ? 500 : 0), r.json()])
-                        .then(([_, j]) => this.setState({
-                            gameIsLoading: false,
-                            cardState: j,
-                            time: 0
-                        }));
+                        .then(([_, j]) => {
+                            this.setState({
+                                gameIsLoading: false,
+                                cardState: j.map,
+                                time: 0
+                            });
+                            this.gameId = j.id;
+                        });
                     this.cardsToFlip = 2;
                     this.intervalId = setInterval(() => this.setState({time: this.state.time + 1}), 1000);
                     this.updateScore();
@@ -91,7 +95,7 @@ export default class App extends React.Component {
     }
 
     makeTurn(cardId) {
-        fetch('/api/game/turn',
+        fetch('/api/game/turn?id=' + this.gameId,
             {
                 method: 'POST',
                 headers: {
