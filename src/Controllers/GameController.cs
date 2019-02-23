@@ -46,7 +46,17 @@ namespace thegame.Controllers
             if (GameState.TurnCount % 2 != 0)
             {
                 result.PreviousPosition = GameState.PreviousPosition;
-                result.IsMatch = GameState.Map[GameState.PreviousPosition].Type == GameState.Map[turn.Position].Type;
+                if (GameState.Map[GameState.PreviousPosition].Type == GameState.Map[turn.Position].Type)
+                {
+                    result.IsMatch = true;
+                }
+
+                else
+                {
+                    GameState.Map[GameState.PreviousPosition].IsFlipped = false;
+                    GameState.Map[turn.Position].IsFlipped = false;
+                }
+
                 GameState.PreviousPosition = -1;
             }
             else
