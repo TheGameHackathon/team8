@@ -44,8 +44,8 @@ export default class Field extends React.Component {
 
     renderCard(cardId) {
         const typeId = this.props.cardState[cardId].type;
-        const isFlipped = this.props.cardState[cardId].isFlipped;
         let cardDivId = "card_" + cardId;
+        const isFlipped = this.props.cardState[cardId].isFlipped;
         return (
             <td className={styles.cell} key={cardDivId}>
                 <div onClick={!isFlipped && (() => this.switchCard(cardId))}
