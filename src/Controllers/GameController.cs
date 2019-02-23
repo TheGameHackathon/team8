@@ -26,14 +26,7 @@ namespace thegame.Controllers
         [HttpGet("start")]
         public IActionResult Start()
         {
-
-            for (var i = 0; i < 32; i++)
-            {
-                GameState.Map.Add(new CardEntity());
-            }
-
-            GameState.PreviousPosition = -1;
-
+            GameState.GenerateMap();
             return Ok(GameState.Map);
         }
 
@@ -64,7 +57,7 @@ namespace thegame.Controllers
             }
             GameState.TurnCount++;
 
-            return Ok(result);
+            return Ok(GameState.Map);
         }
 
         //private CardEntity[,] RandomMap()

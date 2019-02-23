@@ -7,5 +7,6 @@ namespace thegame
         public bool IsFlipped { get; set; }
         public int PreviousPosition { get; set; }
         public bool IsMatch { get; set; }
+        public bool IsGameFinished { get; set; }
     }
 }
