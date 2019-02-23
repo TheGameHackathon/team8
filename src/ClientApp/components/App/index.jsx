@@ -1,6 +1,7 @@
 import React from 'react';
 import styles from './styles.css';
 import Field from '../Field';
+import Button from '@skbkontur/react-ui/Button';
 import StatusPanel from "./StatusPanel";
 
 export default class App extends React.Component {
@@ -44,11 +45,15 @@ export default class App extends React.Component {
     render() {
         return (
             <div className={styles.root}>
-                <StatusPanel score={this.state.score}/>
-                <input type="button"
-                       value={this.state.gameIsLoading ? "Загрузка..." : "Начать игру"}
-                       disabled={this.state.gameIsLoading}
-                       onClick={() => this.startGame()}/>
+                <div className={styles.panel}>
+                    <Button use="pay" size="medium"
+                        className={styles.startButton}
+                        disabled={this.state.startingGame}
+                        onClick={() => this.startGame()}>
+                        {this.state.startingGame ? "Загрузка..." : "Начать игру"}
+                    </Button>
+                    <StatusPanel score={this.state.score}/>
+                </div>
                 {this.renderField()}
             </div>
         );
