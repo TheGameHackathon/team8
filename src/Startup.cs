@@ -6,6 +6,7 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Serialization;
+using Swashbuckle.AspNetCore.Swagger;
 
 namespace thegame
 {
@@ -30,6 +31,14 @@ namespace thegame
                 })
                 .SetCompatibilityVersion(CompatibilityVersion.Version_2_2);
 
+
+            services.AddSwaggerGen(c => {  
+                c.SwaggerDoc("v1", new Info {  
+                    Version = "v1",  
+                    Title = "The Game API"  
+                });  
+            });  
+
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -47,10 +56,15 @@ namespace thegame
 
             app.UseStaticFiles();
             app.UseMvc();
+            app.UseSwagger();  
+            app.UseSwaggerUI(c => {  
+                c.SwaggerEndpoint("/swagger/v1/swagger.json", "API V1");  
+            });
             app.UseSpa(spa =>
             {
                 spa.Options.SourcePath = "ClientApp";
             });
+            
         }
     }
 }
