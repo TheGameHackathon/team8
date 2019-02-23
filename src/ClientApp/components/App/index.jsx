@@ -34,6 +34,7 @@ export default class App extends React.Component {
                             gameIsLoading: false,
                             cardState: j
                         }));
+                    this.updateScore();
                 } else {
                     this.setState({gameIsLoading: false});
                 }
@@ -90,7 +91,7 @@ export default class App extends React.Component {
                         this.cardsToFlip = 2;
                     }
                     r.json().then(j => {
-                        this.setState({cardState: j});
+                        this.setState({cardState: j.map});
                         this.updateScore();
                     });
                 }
