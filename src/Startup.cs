@@ -40,7 +40,7 @@ namespace thegame
                 });  
             });
 
-            services.AddSingleton(z => new GameState());
+            services.AddSingleton<IGameStateRepository>(x => new InMemoryGameRepository());
 
         }
 

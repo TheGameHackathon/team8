@@ -6,6 +6,7 @@ namespace thegame.Domain
 {
     public class GameState
     {
+        public Guid Id { get; set; }
         private int foundedPairsCount = 0;
         public List<CardEntity> Map { get; set; } = new List<CardEntity>();
         public int PreviousPosition { get; set; } = -1;
@@ -31,6 +32,30 @@ namespace thegame.Domain
             TurnCount = 0;
             Score = 0;
             Combo = 1;
+        }
+
+        public static GameState GenerateNewMap(Guid id)
+        {
+            var random = new Random();
+            var elements = new List<CardEntity>();
+            for (int i = 0; i < 16; i++)
+            {
+                elements.Add(new CardEntity { IsFlipped = false, Type = i });
+                elements.Add(new CardEntity { IsFlipped = false, Type = i });
+            }
+
+            elements = elements.OrderBy(x => random.Next()).ToList();
+
+            return new GameState
+            {
+                Combo = 1,
+                foundedPairsCount = 0,
+                Id = id,
+                Map = elements,
+                PreviousPosition = -1,
+                Score = 0,
+                TurnCount = 0
+            };
         }
 
         public void MakeTurn(int position)

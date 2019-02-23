@@ -1,6 +1,7 @@
 import React from 'react';
 import classNames from 'classnames';
 import styles from './styles.css'
+import Background from './images/card-joker.png';
 
 import cardBack0 from './cards/0.png';
 import cardBack1 from './cards/1.png';
