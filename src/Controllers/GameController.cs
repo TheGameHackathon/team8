@@ -26,8 +26,15 @@ namespace thegame.Controllers
         public IActionResult RollCard(int id, CardDTO card)
         {
             //var cardFormGame = games[id].GetCard(card.x, card.y);
-            DataBase.Get(id).GetCard(card.x,card.y);
-            return Ok();
+            var res = DataBase.Get(id).GetCard(card.x,card.y);
+            return Ok(res);
+        }
+
+        [HttpGet("GetField")]
+        public IActionResult GetField(int id)
+        {
+            var cards = DataBase.Get(id).Board.Cards;
+            return Ok(cards);
         }
 
         [HttpPost("StartGame")]
