@@ -11,7 +11,7 @@ namespace thegame.Controllers
         private Game.Game game;
         private Dictionary<int, Game.Game> games;//возможно потом здесь будет БД
         private int currentIndex;
-        GameController()
+        public GameController()
         {
             this.game = new Game.Game();
             games = new Dictionary<int, Game.Game>();

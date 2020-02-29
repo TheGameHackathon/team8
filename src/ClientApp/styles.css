@@ -72,12 +72,6 @@ body {
 
 }
 
-.cardFace {
-    background-size: cover;
-    background-repeat: no-repeat;
-    background-position: center;
-    transform: rotateY(180deg);
-}
 
 .cardFlipped {
     transform: rotateY(180deg);
