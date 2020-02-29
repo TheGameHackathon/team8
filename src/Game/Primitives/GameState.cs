@@ -1,6 +1,8 @@
-﻿namespace thegame.Game
+﻿namespace thegame.Game.Primitives
 {
-	public class GameState
+	public enum GameState
 	{
+		IN_PROCESS,
+		FINISHED
 	}
 }

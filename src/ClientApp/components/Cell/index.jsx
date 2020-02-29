@@ -18,12 +18,13 @@ export default class Cell extends React.Component {
     constructor(props) {
         super(props);
         this.id = props.id;
+        this.gameId = props.gameId;
         this.card = {x: props.id % 4, y: props.id / 4, isOpened: false, isGuessed: false, id: 0}
     }
 
     render() {
         return (<td className={styles.cell}>
-            <div className={styles.card} onClick={(e) => this.flipCard(e, this.id)} id={this.id}>
+            <div className={styles.card} onClick={(e) => this.flipCard(e, this.id, this.gameId)} id={this.id}>
                 <div className={styles.cardSide + ' ' + styles.cardBack}/>
                 <div className={styles.cardSide + ' ' + styles.cardFace} style={{
                     backgroundImage: `url(${cards[this.id % cards.length]})`,
@@ -36,10 +37,10 @@ export default class Cell extends React.Component {
         </td>);
     }
 
-    flipCard(e, id) {
+    flipCard(e, id, gameId) {
         const target = document.getElementById(id);
-        console.log(target.classList);
         setTimeout(() => {
+            console.log(gameId);
             console.log("FLip");
             if (!target.classList.contains(styles.cardFlipped))
                 target.classList.add(styles.cardFlipped);
