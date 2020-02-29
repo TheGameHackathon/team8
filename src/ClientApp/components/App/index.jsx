@@ -3,8 +3,8 @@ import styles from './styles.css';
 import Field from '../Field';
 
 export default class App extends React.Component {
-    constructor () {
-        super();
+    constructor (props) {
+        super(props);
         this.state = {
             score: 50,
         };
