@@ -8,10 +8,11 @@ import b5Image from './images/5b.png'
 import b6Image from './images/6b.png'
 import b7Image from './images/7b.png'
 import b8Image from './images/8b.png'
+import AkImage from './images/AK.png'
 // import b7Image from './images/7b.png'
 // import b8Image from './images/8b.png'
 
-const cards = [b2Image, b3Image, b4Image, b5Image, b6Image, b7Image, b8Image];
+const cards = [b2Image, b3Image, b4Image, b5Image, b6Image, b7Image, b8Image, AkImage];
 
 export default class Cell extends React.Component {
     constructor(props) {
