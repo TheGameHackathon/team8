@@ -1,12 +1,12 @@
 ﻿using System.Collections.Generic;
 using System.Drawing;
+using thegame.Game.Primitives;
 
 namespace thegame.Game.Tools
 {
 	public class BoardGenerator
 	{
-		private static readonly Color[] Colors = new Color[]
-		{
+		private static readonly Color[] Colors = {
 			Color.AliceBlue, 
 			Color.Black, 
 			Color.Blue, 
