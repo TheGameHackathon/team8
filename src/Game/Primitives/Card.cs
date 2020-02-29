@@ -1,22 +1,22 @@
 ﻿using System.Drawing;
 
-namespace thegame.Game
+namespace thegame.Game.Primitives
 {
 	public class Card
 	{
 		public Card(Color color)
 		{
-			Color = Color;
-			status = CardStatus.UNGUESSED;
+			Color = color;
+			Status = CardStatus.UNGUESSED;
 		}
 
-		protected enum CardStatus
-		{
-			GUESSED,
-			UNGUESSED
-		}
-
-		protected CardStatus status { get; set; }
+		public CardStatus Status { get; set; }
 		public Color Color { get; }
+	}
+
+	public enum CardStatus
+	{
+		GUESSED,
+		UNGUESSED
 	}
 }

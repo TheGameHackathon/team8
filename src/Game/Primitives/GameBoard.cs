@@ -1,13 +1,12 @@
-﻿namespace thegame.Game
+﻿namespace thegame.Game.Primitives
 {
 	public class GameBoard
 	{
-		public GameBoard(Card[,] cards) //, string[] images)
+		public GameBoard(Card[,] cards)
 		{
 			Cards = cards;
 		}
 
 		public Card[,] Cards { get; }
-		//public string[] Images { get; }
 	}
 }
