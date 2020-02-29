@@ -1,4 +1,4 @@
-﻿using System.Collections.Generic;
+using System.Collections.Generic;
 using System.Drawing;
 using thegame.Game.Primitives;
 
@@ -6,7 +6,7 @@ namespace thegame.Game.Tools
 {
 	public class BoardGenerator
 	{
-		private static readonly Color[] Colors = {
+		private static readonly List<Color> Colors = new List<Color> {
 			Color.AliceBlue, 
 			Color.Black, 
 			Color.Blue, 
@@ -21,11 +21,10 @@ namespace thegame.Game.Tools
 		{
 			var cards = CreateCards(width, height);
 
-
 			return new GameBoard(cards);
 		}
 
-		private Card[,] CreateCards(int height, int width)
+		private static Card[,] CreateCards(int height, int width)
 		{
 			var size = height * width;
 			var cards = new Card[height,width];
@@ -45,10 +44,11 @@ namespace thegame.Game.Tools
 			return cards;
 		}
 
-		private IEnumerable<Color> GetColors()
+		private static IEnumerable<Color> GetColors()
 		{
-			var colorsCount = Colors.Length;
+			var colorsCount = Colors.Count;
 			var shift = 0;
+			Colors.Shuffle();
 
 			while (true)
 			{
