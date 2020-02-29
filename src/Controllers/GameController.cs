@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using Microsoft.AspNetCore.Mvc;
 using thegame.Game;
@@ -9,43 +10,38 @@ namespace thegame.Controllers
     public class GameController : Controller
     {
         private Game.Game game;
-        private Dictionary<int, Game.Game> games;//возможно потом здесь будет БД
-        private int currentIndex;
         public GameController()
         {
             this.game = new Game.Game();
-            games = new Dictionary<int, Game.Game>();
-            currentIndex = 0;
         }
         
         [HttpGet("score")]
         public IActionResult Score(int id)
         {
-            var score = games[id].GetScore();
-            //var score = game.GetScore();
+            var score = DataBase.Get(id).GetScore(); ;
             return Ok(score);
         }
 
         [HttpPost("RollCard")]
         public IActionResult RollCard(int id, CardDTO card)
         {
-            var cardFormGame = games[id].GetCard(card.x, card.y);
-            //game.GetCard(card.x, card.y);
+            //var cardFormGame = games[id].GetCard(card.x, card.y);
+            DataBase.Get(id).GetCard(card.x,card.y);
             return Ok();
         }
 
         [HttpPost("StartGame")]
         public IActionResult StartGame()
         {
-            currentIndex++;
-            games.Add(currentIndex, new Game.Game());
-            return Ok(currentIndex);
+            game = new Game.Game();
+            var id = DataBase.Add(game);
+            return Ok(id);
         }
 
         [HttpPost("EndGame")]
         public IActionResult EndGame(int id)
         {
-            games.Remove(id);
+            DataBase.Delete(id);
             return Ok();
         }
     }
