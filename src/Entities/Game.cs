@@ -14,38 +14,39 @@ public class Game
 
     public Game()
     {
-        gameMap = new EnumMapCell[8, 10];
-        // for (var x = 0; x < 10; x++)
-        // {
-        //     gameMap[0, x] = EnumMapCell.Wall;
-        //     gameMap[9, x] = EnumMapCell.Wall;
-        // }
-        //
-        // for (var y = 0; y < 8; y++)
-        // {
-        //     gameMap[y, 0] = EnumMapCell.Wall;
-        //     gameMap[y, 9] = EnumMapCell.Wall;
-        // }
-        //
-        // gameMap[1, 1] = EnumMapCell.Player;
-        // gameMap[2, 2] = EnumMapCell.Package;
-        // gameMap[1, 3] = EnumMapCell.Wall;
-        // gameMap[2, 3] = EnumMapCell.Wall;
-        // gameMap[3, 3] = EnumMapCell.Wall;
-        // gameMap[1, 4] = EnumMapCell.Target;
-        LoadLevel(1);
+        gameMap = new EnumMapCell[4, 5];
+        for (var x = 0; x < 10; x++)
+        {
+            gameMap[0, x] = EnumMapCell.Wall;
+            gameMap[9, x] = EnumMapCell.Wall;
+        }
+        
+        for (var y = 0; y < 8; y++)
+        {
+            gameMap[y, 0] = EnumMapCell.Wall;
+            gameMap[y, 9] = EnumMapCell.Wall;
+        }
+        
+        gameMap[1, 1] = EnumMapCell.Player;
+        gameMap[2, 2] = EnumMapCell.Package;
+        gameMap[1, 3] = EnumMapCell.Wall;
+        gameMap[2, 3] = EnumMapCell.Wall;
+        gameMap[3, 3] = EnumMapCell.Wall;
+        gameMap[1, 4] = EnumMapCell.Target;
+        // LoadLevel(1);
     }
 
     public void LoadLevel(int level)
     {
         StreamReader sr = new StreamReader("Levels/" + level.ToString() + ".txt");
+        gameMap = new EnumMapCell[4, 5];
         string? line;
         int y = 0;
         while ((line = sr.ReadLine()) != null)
         {
             for (int x = 0; x < line.Length; x++)
             {
-                gameMap[y, x] = (EnumMapCell) line[x];
+                gameMap[y, x] = (EnumMapCell)(line[x]-48);
             }
         }
     }
