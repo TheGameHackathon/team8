@@ -11,7 +11,36 @@ public class Game
     private bool isGameFinished;
     private int score;
 
-    public void HandlePlayerStep(Vector2 move)
+    public Game()
+    {
+        gameMap = new EnumMapCell[8, 10];
+        for (var x = 0; x < 10; x++)
+        {
+            gameMap[0, x] = EnumMapCell.Wall;
+            gameMap[9, x] = EnumMapCell.Wall;
+        }
+
+        for (var y = 0; y < 8; y++)
+        {
+            gameMap[y, 0] = EnumMapCell.Wall;
+            gameMap[y, 9] = EnumMapCell.Wall;
+        }
+
+        gameMap[1, 1] = EnumMapCell.Player;
+        gameMap[2, 2] = EnumMapCell.Package;
+        gameMap[1, 3] = EnumMapCell.Wall;
+        gameMap[2, 3] = EnumMapCell.Wall;
+        gameMap[3, 3] = EnumMapCell.Wall;
+        gameMap[1, 4] = EnumMapCell.Target;
+    }
+
+    public GameDto UpdateMap(Vector2 move)
+    {
+        HandlePlayerStep(move);
+        return GetGameDto();
+    }
+
+    private void HandlePlayerStep(Vector2 move)
     {
         var destinationCoords = playerPosition + move;
         if (!DoesEntityStayInMap(destinationCoords))
@@ -48,8 +77,9 @@ public class Game
             var cell = gameMap[y, x];
             cells[cellIndex - 1] = new CellDto(cellIndex.ToString(), new VectorDto {X = x, Y = y}, GetCssClass(cell),
                 "", GetZIndex(cell));
+            cellIndex++;
         }
-        return new GameDto(cells, true, true, lineLen, gameMap.GetLength(0), gameId, isGameFinished,score);
+        return new GameDto(cells, true, true, lineLen, gameMap.GetLength(0), gameId, isGameFinished, score);
     }
 
     private string GetCssClass(EnumMapCell cellEntity)
