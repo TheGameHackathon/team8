@@ -14,6 +14,7 @@ public class Game : IUpdatable
 
     public Game(Guid gameId)
     {
+        score = 200;
         this.gameId = gameId;
         
         gameMap = new EnumMapCell[8, 10];
@@ -41,8 +42,18 @@ public class Game : IUpdatable
 
     public GameDto GetUpdatedMap(Vector2 move)
     {
+        HandleScore(move);
         HandlePlayerStep(move);
         return GetGameDto();
+    }
+
+    private void HandleScore(Vector2 move)
+    {
+        var destinationCoords = playerPosition + move;
+        if (move == Vector2.Zero || !DoesEntityStayInMap(destinationCoords))
+            return;
+
+        score -= 10;
     }
 
     private void HandlePlayerStep(Vector2 move)
