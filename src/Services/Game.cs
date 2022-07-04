@@ -1,5 +1,6 @@
 using System;
 using System.Numerics;
+using System.IO;
 using thegame.Models;
 
 namespace thegame.Services;
@@ -17,32 +18,33 @@ public class Game : IUpdatable
     {
         score = gameScore;
         this.gameId = gameId;
-        
-        gameMap = new EnumMapCell[8, 10];
-        targets = new bool[8, 10];
-        for (var x = 0; x < 10; x++)
-        {
-            gameMap[0, x] = EnumMapCell.Wall;
-            gameMap[7, x] = EnumMapCell.Wall;
-        }
+        openedTargets = 0;
+        LoadLevel(1);
+    }
 
-        for (var y = 0; y < 8; y++)
+   private void LoadLevel(int level)
+    {
+        StreamReader sr = new StreamReader("Levels/" + level.ToString() + ".txt");
+        gameMap = new EnumMapCell[10, 10];
+        targets = new bool[10, 10];
+        string? line;
+        int y = 0;
+        while ((line = sr.ReadLine()) != null)
         {
-            gameMap[y, 0] = EnumMapCell.Wall;
-            gameMap[y, 9] = EnumMapCell.Wall;
+            for (int x = 0; x < line.Length; x++)
+            {
+                var mapCell = (EnumMapCell)(line[x]-48);
+                gameMap[y, x] = mapCell;
+                if (mapCell == EnumMapCell.Player)
+                    playerPosition = new Vector2(x, y);
+                if (mapCell == EnumMapCell.Target)
+                {
+                    targets[y, x] = true;
+                    openedTargets++;
+                }
+            }
+            y++;
         }
-
-        gameMap[1, 1] = EnumMapCell.Player;
-        playerPosition = new Vector2(1, 1);
-        
-        gameMap[2, 2] = EnumMapCell.Package;
-        gameMap[1, 4] = EnumMapCell.Target;
-        targets[1, 4] = true;
-        openedTargets = 1;
-        
-        gameMap[1, 3] = EnumMapCell.Wall;
-        gameMap[2, 3] = EnumMapCell.Wall;
-        gameMap[3, 3] = EnumMapCell.Wall;
     }
 
     public GameDto GetUpdatedMap(Vector2 move)
