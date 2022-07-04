@@ -14,12 +14,12 @@ public class Game : IUpdatable
     private int openedTargets;
     private int score;
 
-    public Game(Guid gameId, int gameScore)
+    public Game(Guid gameId, int gameScore, int levelNumber)
     {
         score = gameScore;
         this.gameId = gameId;
         openedTargets = 0;
-        LoadLevel(1);
+        LoadLevel(levelNumber);
     }
 
    private void LoadLevel(int level)

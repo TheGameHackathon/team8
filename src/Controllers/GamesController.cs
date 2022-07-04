@@ -18,16 +18,8 @@ public class GamesController : Controller
     [HttpPost]
     public IActionResult Index([FromBody] string levelNumber)
     {
-        if (levelNumber == "1")
-        {
-            var game = gamesRepository.GetNewGame(300);
-            var gameDto = game.GetGameDto();
-            return Ok(gameDto);
-        }
-
-        if (levelNumber == "2")
-            throw new NotImplementedException();
-
-        throw new NotSupportedException();
+        var game = gamesRepository.GetNewGame(300, int.Parse(levelNumber));
+        var gameDto = game.GetGameDto();
+        return Ok(gameDto);
     }
 }
