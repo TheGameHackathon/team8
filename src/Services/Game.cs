@@ -8,50 +8,39 @@ namespace thegame.Services;
 public class Game : IUpdatable
 {
     private EnumMapCell[,] gameMap; //[y, x]
+    private bool[,] targets;
     private Vector2 playerPosition;
     private Guid gameId;
-    private bool isGameFinished;
+    private int openedTargets;
     private int score;
 
     public Game(Guid gameId)
     {
         this.gameId = gameId;
-        
-        // gameMap = new EnumMapCell[8, 10];
-        // for (var x = 0; x < 10; x++)
-        // {
-        //     gameMap[0, x] = EnumMapCell.Wall;
-        //     gameMap[7, x] = EnumMapCell.Wall;
-        // }
-        //
-        // for (var y = 0; y < 8; y++)
-        // {
-        //     gameMap[y, 0] = EnumMapCell.Wall;
-        //     gameMap[y, 9] = EnumMapCell.Wall;
-        // }
-        //
-        // gameMap[1, 1] = EnumMapCell.Player;
-        // playerPosition = new Vector2(1, 1);
-        //
-        // gameMap[2, 2] = EnumMapCell.Package;
-        // gameMap[1, 3] = EnumMapCell.Wall;
-        // gameMap[2, 3] = EnumMapCell.Wall;
-        // gameMap[3, 3] = EnumMapCell.Wall;
-        // gameMap[1, 4] = EnumMapCell.Target;
+        openedTargets = 0;
         LoadLevel(1);
     }
 
-    public void LoadLevel(int level)
+   private void LoadLevel(int level)
     {
         StreamReader sr = new StreamReader("Levels/" + level.ToString() + ".txt");
         gameMap = new EnumMapCell[10, 10];
+        targets = new bool[10, 10];
         string? line;
         int y = 0;
         while ((line = sr.ReadLine()) != null)
         {
             for (int x = 0; x < line.Length; x++)
             {
-                gameMap[y, x] = (EnumMapCell)(line[x]-48);
+                var mapCell = (EnumMapCell)(line[x]-48);
+                gameMap[y, x] = mapCell;
+                if (mapCell == EnumMapCell.Player)
+                    playerPosition = new Vector2(x, y);
+                if (mapCell == EnumMapCell.Target)
+                {
+                    targets[y, x] = true;
+                    openedTargets++;
+                }
             }
             y++;
         }
@@ -84,7 +73,12 @@ public class Game : IUpdatable
             if (packDestCell == EnumMapCell.Empty || packDestCell == EnumMapCell.Target)
             {
                 MovePlayerTo(destinationCoords);
-                SetEntityTo( packageDestCoord, EnumMapCell.Package);
+                SetEntityTo(packageDestCoord, EnumMapCell.Package);
+                
+                if (packDestCell == EnumMapCell.Target)
+                    openedTargets--;
+                if (targets[(int) destinationCoords.Y, (int) destinationCoords.X])
+                    openedTargets++;
             }
         }
     }
@@ -102,7 +96,8 @@ public class Game : IUpdatable
                 "", GetZIndex(cell));
             cellIndex++;
         }
-        return new GameDto(cells, true, true, lineLen, gameMap.GetLength(0), gameId, isGameFinished, score);
+        return new GameDto(cells, true, true, 
+            lineLen, gameMap.GetLength(0), gameId, openedTargets == 0, score);
     }
 
     private string GetCssClass(EnumMapCell cellEntity)
@@ -140,7 +135,9 @@ public class Game : IUpdatable
     private void MovePlayerTo(Vector2 destinationCoords)
     {
         gameMap[(int) destinationCoords.Y, (int) destinationCoords.X] = EnumMapCell.Player;
-        gameMap[(int) playerPosition.Y, (int) playerPosition.X] = EnumMapCell.Empty;
+        var prevX = (int) playerPosition.X;
+        var prevY = (int) playerPosition.Y;
+        gameMap[prevY, prevX] = targets[prevY, prevX] ? EnumMapCell.Target : EnumMapCell.Empty;
         playerPosition = destinationCoords;
     }
 
