@@ -1,3 +1,4 @@
+using System;
 using Microsoft.AspNetCore.Mvc;
 using thegame.Models;
 using thegame.Services;
@@ -15,9 +16,9 @@ public class GamesController : Controller
     }
 
     [HttpPost]
-    public IActionResult Index()
+    public IActionResult Index([FromBody] string levelNumber)
     {
-        var game = gamesRepository.GetNewGame();
+        var game = gamesRepository.GetNewGame(300, int.Parse(levelNumber));
         var gameDto = game.GetGameDto();
         return Ok(gameDto);
     }
