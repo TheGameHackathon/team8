@@ -110,7 +110,7 @@ public class Game : IUpdatable
         for (var x = 0; x < gameMap.GetLength(1); x++)
         {
             var cell = gameMap[y, x];
-            cells[cellIndex - 1] = new CellDto(cellIndex.ToString(), new VectorDto {X = x, Y = y}, GetCssClass(cell),
+            cells[cellIndex - 1] = new CellDto(cellIndex.ToString(), new VectorDto {X = x, Y = y}, GetCssClass(cell, targets[y, x]),
                 "", GetZIndex(cell));
             cellIndex++;
         }
@@ -118,14 +118,14 @@ public class Game : IUpdatable
             lineLen, gameMap.GetLength(0), gameId, openedTargets == 0, score);
     }
 
-    private string GetCssClass(EnumMapCell cellEntity)
+    private string GetCssClass(EnumMapCell cellEntity, bool isOnTarget)
     {
         if (cellEntity == EnumMapCell.Wall)
             return "wall";
         if (cellEntity == EnumMapCell.Player)
             return "player";
         if (cellEntity == EnumMapCell.Package)
-            return "box";
+            return isOnTarget ? "boxOnTarget" : "box";
         if (cellEntity == EnumMapCell.Target)
             return "target";
         return "";
