@@ -55,15 +55,15 @@ public class Game : IUpdatable
 
         if (destCell == EnumMapCell.Wall)
             return;
-        if (destCell == EnumMapCell.Empty)
+        if (destCell == EnumMapCell.Empty || destCell == EnumMapCell.Target)
             MovePlayerTo(destinationCoords);
         if (destCell == EnumMapCell.Package)
         {
             var packageDestCoord = destinationCoords + move;
             if (!DoesEntityStayInMap(packageDestCoord))
                 return;
-            var packDestCell = gameMap[(int)destinationCoords.Y, (int)destinationCoords.X];
-            if (packDestCell == EnumMapCell.Empty)
+            var packDestCell = gameMap[(int)packageDestCoord.Y, (int)packageDestCoord.X];
+            if (packDestCell == EnumMapCell.Empty || packDestCell == EnumMapCell.Target)
             {
                 MovePlayerTo(destinationCoords);
                 SetEntityTo( packageDestCoord, EnumMapCell.Package);
@@ -113,8 +113,8 @@ public class Game : IUpdatable
     {
         if (destinationCoords.X < 0 || 
             destinationCoords.Y < 0 || 
-            destinationCoords.X >= gameMap.GetLength(0) || 
-            destinationCoords.Y >= gameMap.GetLength(1))
+            destinationCoords.X >= gameMap.GetLength(1) || 
+            destinationCoords.Y >= gameMap.GetLength(0))
             return false;
         return true;
     }
