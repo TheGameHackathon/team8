@@ -7,9 +7,10 @@ namespace thegame.Services;
 public class Game : IUpdatable
 {
     private EnumMapCell[,] gameMap; //[y, x]
+    private bool[,] targets;
     private Vector2 playerPosition;
     private Guid gameId;
-    private bool isGameFinished;
+    private int openedTargets;
     private int score;
 
     public Game(Guid gameId)
@@ -17,6 +18,7 @@ public class Game : IUpdatable
         this.gameId = gameId;
         
         gameMap = new EnumMapCell[8, 10];
+        targets = new bool[8, 10];
         for (var x = 0; x < 10; x++)
         {
             gameMap[0, x] = EnumMapCell.Wall;
@@ -33,10 +35,13 @@ public class Game : IUpdatable
         playerPosition = new Vector2(1, 1);
         
         gameMap[2, 2] = EnumMapCell.Package;
+        gameMap[1, 4] = EnumMapCell.Target;
+        targets[1, 4] = true;
+        openedTargets = 1;
+        
         gameMap[1, 3] = EnumMapCell.Wall;
         gameMap[2, 3] = EnumMapCell.Wall;
         gameMap[3, 3] = EnumMapCell.Wall;
-        gameMap[1, 4] = EnumMapCell.Target;
     }
 
     public GameDto GetUpdatedMap(Vector2 move)
@@ -66,7 +71,12 @@ public class Game : IUpdatable
             if (packDestCell == EnumMapCell.Empty || packDestCell == EnumMapCell.Target)
             {
                 MovePlayerTo(destinationCoords);
-                SetEntityTo( packageDestCoord, EnumMapCell.Package);
+                SetEntityTo(packageDestCoord, EnumMapCell.Package);
+                
+                if (packDestCell == EnumMapCell.Target)
+                    openedTargets--;
+                if (targets[(int) destinationCoords.Y, (int) destinationCoords.X])
+                    openedTargets++;
             }
         }
     }
@@ -84,7 +94,8 @@ public class Game : IUpdatable
                 "", GetZIndex(cell));
             cellIndex++;
         }
-        return new GameDto(cells, true, true, lineLen, gameMap.GetLength(0), gameId, isGameFinished, score);
+        return new GameDto(cells, true, true, 
+            lineLen, gameMap.GetLength(0), gameId, openedTargets == 0, score);
     }
 
     private string GetCssClass(EnumMapCell cellEntity)
@@ -122,7 +133,9 @@ public class Game : IUpdatable
     private void MovePlayerTo(Vector2 destinationCoords)
     {
         gameMap[(int) destinationCoords.Y, (int) destinationCoords.X] = EnumMapCell.Player;
-        gameMap[(int) playerPosition.Y, (int) playerPosition.X] = EnumMapCell.Empty;
+        var prevX = (int) playerPosition.X;
+        var prevY = (int) playerPosition.Y;
+        gameMap[prevY, prevX] = targets[prevY, prevX] ? EnumMapCell.Target : EnumMapCell.Empty;
         playerPosition = destinationCoords;
     }
 
