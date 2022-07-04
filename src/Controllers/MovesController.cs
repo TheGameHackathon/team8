@@ -11,29 +11,40 @@ namespace thegame.Controllers;
 [Route("api/games/{gameId}/moves")]
 public class MovesController : Controller
 {
-    public Vector2 playerCoords = new Vector2(1, 1);
+    private GamesRepository gamesRepository;
+
+    public MovesController(GamesRepository gamesRepository)
+    {
+        this.gamesRepository = gamesRepository;
+
+    }
 
     [HttpPost]
     public IActionResult Moves(Guid gameId, [FromBody] UserInputDto userInput)
     {
-        var game = TestData.AGameDto(new VectorDto {X = 1, Y = 1});
+        Console.WriteLine("Hui");
+        IUpdatable game = gamesRepository.GetGameById(gameId);
         //if (userInput.ClickedPos != null)
         //    game.Cells.First(c => c.Type == "color4").Pos = userInput.ClickedPos;
+        Vector2 vector;
         switch(userInput.KeyPressed)
         {
             case 87: case 38:
-                Console.WriteLine("UP");
+                vector = new Vector2(-1, 0);
             break;
             case 83: case 40:
-                Console.WriteLine("DOWN");
+                vector = new Vector2(1, 0);
             break;
             case 65: case 37:
-                Console.WriteLine("LEFT");
+                vector = new Vector2(0, -1);
             break;
             case 68: case 39:
-                Console.WriteLine("RIGHT");
+                vector = new Vector2(0, 1);
+            break;
+            default:
+                vector = new Vector2(0, 0);
             break;
         }
-        return Ok(game);
+        return Ok(game.UpdateMap(vector));
     }
 }
