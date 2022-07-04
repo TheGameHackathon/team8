@@ -17,9 +17,7 @@ public class Game : IUpdatable
 
     public Game(Guid gameId, int gameScore, int levelNumber)
     {
-        score = 1000;
         this.gameId = gameId;
-        openedTargets = 0;
         LoadLevel(levelNumber);
     }
 
@@ -30,6 +28,7 @@ public class Game : IUpdatable
    private void LoadLevel(int level)
    {
        currentLevel = level;
+       openedTargets = 0;
         StreamReader sr = new StreamReader("Levels/" + level.ToString() + ".txt");
         score = int.Parse(sr.ReadLine().Trim());
         gameMap = new EnumMapCell[10, 10];
