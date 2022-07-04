@@ -1,4 +1,4 @@
-﻿namespace thegame.Models;
+﻿namespace thegame.Services;
 
 public enum EnumMapCell
 {

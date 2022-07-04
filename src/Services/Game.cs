@@ -1,24 +1,27 @@
 using System;
 using System.Numerics;
 using System.IO;
+using thegame.Models;
 
-namespace thegame.Models;
+namespace thegame.Services;
 
-public class Game
+public class Game : IUpdatable
 {
     private EnumMapCell[,] gameMap; //[y, x]
     private Vector2 playerPosition;
-    private Guid gameId = Guid.Empty;
+    private Guid gameId;
     private bool isGameFinished;
     private int score;
 
-    public Game()
+    public Game(Guid gameId)
     {
-        gameMap = new EnumMapCell[4, 5];
+        this.gameId = gameId;
+        
+        gameMap = new EnumMapCell[8, 10];
         for (var x = 0; x < 10; x++)
         {
             gameMap[0, x] = EnumMapCell.Wall;
-            gameMap[9, x] = EnumMapCell.Wall;
+            gameMap[7, x] = EnumMapCell.Wall;
         }
         
         for (var y = 0; y < 8; y++)
@@ -28,6 +31,8 @@ public class Game
         }
         
         gameMap[1, 1] = EnumMapCell.Player;
+        playerPosition = new Vector2(1, 1);
+        
         gameMap[2, 2] = EnumMapCell.Package;
         gameMap[1, 3] = EnumMapCell.Wall;
         gameMap[2, 3] = EnumMapCell.Wall;
@@ -51,7 +56,7 @@ public class Game
         }
     }
 
-    public GameDto UpdateMap(Vector2 move)
+    public GameDto GetUpdatedMap(Vector2 move)
     {
         HandlePlayerStep(move);
         return GetGameDto();
@@ -60,22 +65,22 @@ public class Game
     private void HandlePlayerStep(Vector2 move)
     {
         var destinationCoords = playerPosition + move;
-        if (!DoesEntityStayInMap(destinationCoords))
+        if (move == Vector2.Zero || !DoesEntityStayInMap(destinationCoords))
             return;
 
         var destCell = gameMap[(int)destinationCoords.Y, (int)destinationCoords.X];
 
         if (destCell == EnumMapCell.Wall)
             return;
-        if (destCell == EnumMapCell.Empty)
+        if (destCell == EnumMapCell.Empty || destCell == EnumMapCell.Target)
             MovePlayerTo(destinationCoords);
         if (destCell == EnumMapCell.Package)
         {
             var packageDestCoord = destinationCoords + move;
             if (!DoesEntityStayInMap(packageDestCoord))
                 return;
-            var packDestCell = gameMap[(int)destinationCoords.Y, (int)destinationCoords.X];
-            if (packDestCell == EnumMapCell.Empty)
+            var packDestCell = gameMap[(int)packageDestCoord.Y, (int)packageDestCoord.X];
+            if (packDestCell == EnumMapCell.Empty || packDestCell == EnumMapCell.Target)
             {
                 MovePlayerTo(destinationCoords);
                 SetEntityTo( packageDestCoord, EnumMapCell.Package);
@@ -125,8 +130,8 @@ public class Game
     {
         if (destinationCoords.X < 0 || 
             destinationCoords.Y < 0 || 
-            destinationCoords.X >= gameMap.GetLength(0) || 
-            destinationCoords.Y >= gameMap.GetLength(1))
+            destinationCoords.X >= gameMap.GetLength(1) || 
+            destinationCoords.Y >= gameMap.GetLength(0))
             return false;
         return true;
     }
