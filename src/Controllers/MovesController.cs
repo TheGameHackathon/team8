@@ -38,6 +38,10 @@ public class MovesController : Controller
             case 68: case 39:
                 vector = new Vector2(1, 0);
             break;
+            case 69:
+                gamesRepository.GetGameById(gameId).Reload(); 
+                vector = new Vector2(0, 0);
+                break;
             default:
                 vector = new Vector2(0, 0);
             break;

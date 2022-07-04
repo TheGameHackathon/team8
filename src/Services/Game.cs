@@ -13,6 +13,7 @@ public class Game : IUpdatable
     private Guid gameId;
     private int openedTargets;
     private int score;
+    private int currentLevel = 1;
 
     public Game(Guid gameId)
     {
@@ -22,7 +23,8 @@ public class Game : IUpdatable
     }
 
    private void LoadLevel(int level)
-    {
+   {
+       currentLevel = level;
         StreamReader sr = new StreamReader("Levels/" + level.ToString() + ".txt");
         gameMap = new EnumMapCell[10, 10];
         targets = new bool[10, 10];
@@ -46,6 +48,11 @@ public class Game : IUpdatable
         }
     }
 
+   public void Reload()
+   {
+       LoadLevel(currentLevel);
+   }
+   
     public GameDto GetUpdatedMap(Vector2 move)
     {
         HandlePlayerStep(move);
