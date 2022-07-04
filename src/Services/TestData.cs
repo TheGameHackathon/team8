@@ -13,21 +13,21 @@ public class TestData
 
         var prototypeMap = new List<CellDto>();
         
-        prototypeMap.Add(new CellDto("5", new VectorDto{X = 2, Y = 4}, "player", "", 10));
+        prototypeMap.Add(new CellDto("0", movingObjectPosition, "player", "", 100));
         
         
         for (var i = 0; i < 10; i++)
             prototypeMap.Add(new CellDto((i + 1).ToString(), new VectorDto {X = i, Y = 0}, "wall", "", 20));
         
         for (var i = 0; i < 10; i++)
-            prototypeMap.Add(new CellDto((i + 1).ToString(), new VectorDto {X = i, Y = 7}, "wall", "", 20));
+            prototypeMap.Add(new CellDto((i + 10).ToString(), new VectorDto {X = i, Y = 7}, "wall", "", 20));
         
         for (var i = 0; i < 8; i++)
-            prototypeMap.Add(new CellDto((i + 1).ToString(), new VectorDto {X = 0, Y = i}, "wall", "", 20));
+            prototypeMap.Add(new CellDto((i + 20).ToString(), new VectorDto {X = 0, Y = i}, "wall", "", 20));
         
         for (var i = 0; i < 8; i++)
-            prototypeMap.Add(new CellDto((i + 1).ToString(), new VectorDto {X = 9, Y = i}, "wall", "", 20));
+            prototypeMap.Add(new CellDto((i + 30).ToString(), new VectorDto {X = 9, Y = i}, "wall", "", 20));
 
-        return new GameDto(prototypeMap.ToArray(), false, false, width, height, Guid.Empty, movingObjectPosition.X == 0, movingObjectPosition.Y);
+        return new GameDto(prototypeMap.ToArray(), true, true, width, height, Guid.Empty, movingObjectPosition.X == 0, movingObjectPosition.Y);
     }
 }
