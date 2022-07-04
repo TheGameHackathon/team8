@@ -30,6 +30,8 @@ public class Game : IUpdatable
         }
 
         gameMap[1, 1] = EnumMapCell.Player;
+        playerPosition = new Vector2(1, 1);
+        
         gameMap[2, 2] = EnumMapCell.Package;
         gameMap[1, 3] = EnumMapCell.Wall;
         gameMap[2, 3] = EnumMapCell.Wall;
@@ -37,7 +39,7 @@ public class Game : IUpdatable
         gameMap[1, 4] = EnumMapCell.Target;
     }
 
-    public GameDto UpdateMap(Vector2 move)
+    public GameDto GetUpdatedMap(Vector2 move)
     {
         HandlePlayerStep(move);
         return GetGameDto();
@@ -46,7 +48,7 @@ public class Game : IUpdatable
     private void HandlePlayerStep(Vector2 move)
     {
         var destinationCoords = playerPosition + move;
-        if (!DoesEntityStayInMap(destinationCoords))
+        if (move == Vector2.Zero || !DoesEntityStayInMap(destinationCoords))
             return;
 
         var destCell = gameMap[(int)destinationCoords.Y, (int)destinationCoords.X];

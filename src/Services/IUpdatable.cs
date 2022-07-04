@@ -4,6 +4,6 @@ namespace thegame.Models
 {
     public interface IUpdatable
     {
-        public GameDto UpdateMap(Vector2 move);
+        public GameDto GetUpdatedMap(Vector2 move);
     }
 }
