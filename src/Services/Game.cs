@@ -18,7 +18,7 @@ public class Game : IUpdatable
     {
         this.gameId = gameId;
         openedTargets = 0;
-        LoadLevel(1);
+        LoadLevel(2);
     }
 
    private void LoadLevel(int level)
