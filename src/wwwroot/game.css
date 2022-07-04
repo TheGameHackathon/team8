@@ -20,6 +20,14 @@
     background-color: magenta;
 }
 
+.wall{
+    background-image: url("images/bricks.png");
+}
+
+.player{
+    background-image: url("images/unicorn.svg");
+}
+
 
 
 /* 2048 styles */

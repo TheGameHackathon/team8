@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using thegame.Models;
 
 namespace thegame.Services;
@@ -9,14 +10,24 @@ public class TestData
     {
         var width = 10;
         var height = 8;
-        var testCells = new[]
-        {
-            new CellDto("1", new VectorDto {X = 2, Y = 4}, "color1", "", 0),
-            new CellDto("2", new VectorDto {X = 5, Y = 4}, "color1", "", 0),
-            new CellDto("3", new VectorDto {X = 3, Y = 1}, "color2", "", 20),
-            new CellDto("4", new VectorDto {X = 1, Y = 0}, "color2", "", 20),
-            new CellDto("5", movingObjectPosition, "color4", "☺", 10),
-        };
-        return new GameDto(testCells, true, true, width, height, Guid.Empty, movingObjectPosition.X == 0, movingObjectPosition.Y);
+
+        var prototypeMap = new List<CellDto>();
+        
+        prototypeMap.Add(new CellDto("0", movingObjectPosition, "player", "", 100));
+        
+        
+        for (var i = 0; i < 10; i++)
+            prototypeMap.Add(new CellDto((i + 1).ToString(), new VectorDto {X = i, Y = 0}, "wall", "", 20));
+        
+        for (var i = 0; i < 10; i++)
+            prototypeMap.Add(new CellDto((i + 10).ToString(), new VectorDto {X = i, Y = 7}, "wall", "", 20));
+        
+        for (var i = 0; i < 8; i++)
+            prototypeMap.Add(new CellDto((i + 20).ToString(), new VectorDto {X = 0, Y = i}, "wall", "", 20));
+        
+        for (var i = 0; i < 8; i++)
+            prototypeMap.Add(new CellDto((i + 30).ToString(), new VectorDto {X = 9, Y = i}, "wall", "", 20));
+
+        return new GameDto(prototypeMap.ToArray(), true, true, width, height, Guid.Empty, movingObjectPosition.X == 0, movingObjectPosition.Y);
     }
 }
