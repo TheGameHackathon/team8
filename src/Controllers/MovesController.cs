@@ -10,12 +10,18 @@ namespace thegame.Controllers;
 [Route("api/games/{gameId}/moves")]
 public class MovesController : Controller
 {
+    private GamesRepository gamesRepository;
+
+    public MovesController(GamesRepository gamesRepository)
+    {
+        this.gamesRepository = gamesRepository;
+    }
+
     [HttpPost]
     public IActionResult Moves(Guid gameId, [FromBody]UserInputDto userInput)
     {
-        var game = TestData.AGameDto(userInput.ClickedPos ?? new VectorDto {X = 1, Y = 1});
-        if (userInput.ClickedPos != null)
-            game.Cells.First(c => c.Type == "player").Pos = userInput.ClickedPos;
-        return Ok(game);
+        var game = gamesRepository.GetGameById(gameId);
+        //
+        return Ok(game.GetGameDto());
     }
 }

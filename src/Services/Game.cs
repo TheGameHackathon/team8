@@ -1,23 +1,26 @@
 using System;
 using System.Numerics;
+using thegame.Models;
 
-namespace thegame.Models;
+namespace thegame.Services;
 
 public class Game : IUpdatable
 {
     private EnumMapCell[,] gameMap; //[y, x]
     private Vector2 playerPosition;
-    private Guid gameId = Guid.Empty;
+    private Guid gameId;
     private bool isGameFinished;
     private int score;
 
-    public Game()
+    public Game(Guid gameId)
     {
+        this.gameId = gameId;
+        
         gameMap = new EnumMapCell[8, 10];
         for (var x = 0; x < 10; x++)
         {
             gameMap[0, x] = EnumMapCell.Wall;
-            gameMap[9, x] = EnumMapCell.Wall;
+            gameMap[7, x] = EnumMapCell.Wall;
         }
 
         for (var y = 0; y < 8; y++)

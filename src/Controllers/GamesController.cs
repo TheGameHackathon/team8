@@ -7,9 +7,18 @@ namespace thegame.Controllers;
 [Route("api/games")]
 public class GamesController : Controller
 {
+    private GamesRepository gamesRepository;
+
+    public GamesController(GamesRepository gamesRepository)
+    {
+        this.gamesRepository = gamesRepository;
+    }
+
     [HttpPost]
     public IActionResult Index()
     {
-        return Ok(TestData.AGameDto(new VectorDto {X = 1, Y = 1}));
+        var game = gamesRepository.GetNewGame();
+        var gameDto = game.GetGameDto();
+        return Ok(gameDto);
     }
 }
