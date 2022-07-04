@@ -1,3 +1,4 @@
+using System;
 using Microsoft.AspNetCore.Mvc;
 using thegame.Models;
 using thegame.Services;
@@ -15,10 +16,18 @@ public class GamesController : Controller
     }
 
     [HttpPost]
-    public IActionResult Index()
+    public IActionResult Index([FromBody] string levelNumber)
     {
-        var game = gamesRepository.GetNewGame(300);
-        var gameDto = game.GetGameDto();
-        return Ok(gameDto);
+        if (levelNumber == "1")
+        {
+            var game = gamesRepository.GetNewGame(300);
+            var gameDto = game.GetGameDto();
+            return Ok(gameDto);
+        }
+
+        if (levelNumber == "2")
+            throw new NotImplementedException();
+
+        throw new NotSupportedException();
     }
 }
