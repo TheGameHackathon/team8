@@ -1,11 +1,13 @@
 using thegame.Services;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.Extensions.DependencyInjection;
+using Sokoban.Interfaces;
+using Sokoban.Services;
 
 var builder = WebApplication.CreateBuilder();
 
 builder.Services.AddMvc();
-builder.Services.AddSingleton<GamesRepository>();
+builder.Services.AddSingleton<IRepository<Game>, GameInstanceRepository>();
 
 var app = builder.Build();
 

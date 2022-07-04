@@ -2,15 +2,16 @@ using System;
 using Microsoft.AspNetCore.Mvc;
 using thegame.Models;
 using thegame.Services;
+using Sokoban.Interfaces;
 
 namespace thegame.Controllers;
 
 [Route("api/games")]
 public class GamesController : Controller
 {
-    private GamesRepository gamesRepository;
+    private IRepository<Game> gamesRepository;
 
-    public GamesController(GamesRepository gamesRepository)
+    public GamesController(IRepository<Game> gamesRepository)
     {
         this.gamesRepository = gamesRepository;
     }
@@ -18,8 +19,8 @@ public class GamesController : Controller
     [HttpPost]
     public IActionResult Index([FromBody] string levelNumber)
     {
-        var game = gamesRepository.GetNewGame(300, int.Parse(levelNumber));
-        var gameDto = game.GetGameDto();
+        var game = gamesRepository.Create(guid => new Game(guid, 300, int.Parse(levelNumber)));
+        var gameDto = game.Item2.GetGameDto();
         return Ok(gameDto);
     }
 }
