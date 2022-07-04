@@ -1,28 +1,27 @@
 using System.Numerics;
 using System;
 using System.Linq;
-using System.Numerics;
 using Microsoft.AspNetCore.Mvc;
 using thegame.Models;
 using thegame.Services;
+using Sokoban.Interfaces;
 
 namespace thegame.Controllers;
 
 [Route("api/games/{gameId}/moves")]
 public class MovesController : Controller
 {
-    private GamesRepository gamesRepository;
+    private IRepository<Game> gamesRepository;
 
-    public MovesController(GamesRepository gamesRepository)
+    public MovesController(IRepository<Game> gamesRepository)
     {
         this.gamesRepository = gamesRepository;
-
     }
 
     [HttpPost]
     public IActionResult Moves(Guid gameId, [FromBody] UserInputDto userInput)
     {
-        IUpdatable game = gamesRepository.GetGameById(gameId);
+        IUpdatable game = gamesRepository.Get(gameId);
         Vector2 vector;
         switch(userInput.KeyPressed)
         {

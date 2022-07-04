@@ -15,6 +15,6 @@ public class GamesRepository
         return game;
     }
 
-    public Game GetGameById(Guid guid)
+    public Game GetById(Guid guid)
         => idToGame[guid];
 }
