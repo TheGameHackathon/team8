@@ -3,7 +3,7 @@ using System.Numerics;
 
 namespace thegame.Models;
 
-public class Game
+public class Game : IUpdatable
 {
     private EnumMapCell[,] gameMap; //[y, x]
     private Vector2 playerPosition;
