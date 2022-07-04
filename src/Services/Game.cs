@@ -12,9 +12,9 @@ public class Game : IUpdatable
     private bool isGameFinished;
     private int score;
 
-    public Game(Guid gameId)
+    public Game(Guid gameId, int gameScore)
     {
-        score = 200;
+        score = gameScore;
         this.gameId = gameId;
         
         gameMap = new EnumMapCell[8, 10];
@@ -50,10 +50,17 @@ public class Game : IUpdatable
     private void HandleScore(Vector2 move)
     {
         var destinationCoords = playerPosition + move;
+        
         if (move == Vector2.Zero || !DoesEntityStayInMap(destinationCoords))
             return;
-
-        score -= 10;
+        
+        
+        var destCell = gameMap[(int)destinationCoords.Y, (int)destinationCoords.X];
+        if (destCell == EnumMapCell.Wall)
+            return;
+        
+        if (score >= 10)
+            score -= 10;
     }
 
     private void HandlePlayerStep(Vector2 move)

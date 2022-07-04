@@ -7,10 +7,10 @@ public class GamesRepository
 {
     private Dictionary<Guid, Game> idToGame = new Dictionary<Guid, Game>();
 
-    public Game GetNewGame()
+    public Game GetNewGame(int baseScore)
     {
         var guid = Guid.NewGuid();
-        var game = new Game(guid);
+        var game = new Game(guid, baseScore);
         idToGame[guid] = game;
         return game;
     }

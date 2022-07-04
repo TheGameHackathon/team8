@@ -17,7 +17,7 @@ public class GamesController : Controller
     [HttpPost]
     public IActionResult Index()
     {
-        var game = gamesRepository.GetNewGame();
+        var game = gamesRepository.GetNewGame(300);
         var gameDto = game.GetGameDto();
         return Ok(gameDto);
     }
