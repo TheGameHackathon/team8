@@ -6,11 +6,8 @@
   </PropertyGroup>
 
   <ItemGroup>
-<<<<<<< HEAD
     <Folder Include="Levels\" />
-=======
     <Folder Include="Entities" />
->>>>>>> master
   </ItemGroup>
 
 </Project>
