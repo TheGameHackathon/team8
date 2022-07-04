@@ -6,8 +6,17 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <Folder Include="Levels\" />
+    <Folder Include="Levels" />
     <Folder Include="Entities" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Update="Levels\1.txt">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Update="Levels\2.txt">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
   </ItemGroup>
 
 </Project>
